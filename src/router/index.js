@@ -1,22 +1,33 @@
 import Vue from 'vue'
+// 导入router
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-
+// 导入自定义的包
+import Login from '../views/Login'
+import Home from '../views/Home'
+import LoginC from "@/views/LoginC";
+// 开启路由
 Vue.use(VueRouter)
-
+// 配置路由
 const routes = [
   {
-    path: '/',
-    name: 'Home',
-    component: Home
+    path:'/',
+    name:'LoginC',
+    component: LoginC,
+    hidden:true //防止被渲染出来
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/login',
+    name: 'Login',
+    component: Login,
+    hidden:true //防止被渲染出来
+  },
+  {
+    path: '/home',
+    name: 'Home',
+    component: Home,
+    //使得组件内的router生效，而不是跳进app.vue的路由中
+    children: [
+    ]
   }
 ]
 
