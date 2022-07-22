@@ -8,7 +8,7 @@
              element-loading-text="正在登录......"
              element-loading-spinner="el-icon-loading"
              element-loading-background="rgba(0, 0, 0, 0.8)">
-      <h2 class="loginTitle">系统登录</h2>
+      <h2 class="loginTitle" style="color: #1d1d1f">系统登录</h2>
       <el-form-item prop="username">
         <el-input type="text" v-model="LoginForm.username" placeholder="请输入账号"></el-input>
       </el-form-item>
@@ -26,14 +26,14 @@
         <el-col :span="4">
           <el-checkbox v-model="checked" class="remember">记住我</el-checkbox>
         </el-col>
-        <el-col :span="4" :offset="16">
-          <el-link type="info" class="forgotPasswd" @click="updateCaptcha">忘记密码</el-link>
+        <el-col :span="4" :offset="15">
+          <el-link type="info" class="forgotPasswd" @click="forgot">忘记密码</el-link>
         </el-col>
       </el-row>
       <!--  通过@click来绑定事件    -->
       <el-button style="width: 100%" type="primary" @click="submitLogin">登录</el-button>
 
-      <el-link type="info" style="margin:10px 10px 0px;position: relative;right: 5px">注册用户</el-link>
+      <el-link type="info" style="margin:10px 10px 0px;position: relative;right: 5px" @click="register">注册用户</el-link>
 
 
     </el-form>
@@ -46,6 +46,14 @@ import {Encrypt} from '@/utils/aes.js'
 // 导出模块
 export default {
   name: "LoginC",
+  //创建前设置
+  beforeCreate () {
+    document.querySelector('body').setAttribute('style', 'background-color:#f5f5f7;')
+  },
+  //销毁前清除
+  beforeDestroy () {
+    document.querySelector('body').removeAttribute('style')
+  },
   data() {
     return {
       captchaUrl: '/captcha?time=' + new Date(),
@@ -69,8 +77,15 @@ export default {
 
   methods: {
     // 点击刷新验证码
+    forgot(){
+      this.$router.push('/forgot')
+    },
     updateCaptcha() {
       this.captchaUrl = '/captcha?time=' + new Date()
+    },
+    // 注册
+    register(){
+      this.$router.push('/register')
     },
     submitLogin() {
       // 登录
@@ -146,7 +161,7 @@ export default {
   border-radius: 15px;
   background-clip: padding-box;
   margin: 180px auto;
-  width: 400px;
+  width: 375px;
   padding: 15px 35px 25px 35px;
   border: 1px solid #eaeaea;
   background: #fefefe;
@@ -159,7 +174,7 @@ export default {
 }
 
 .captcha {
-  width: 295px;
+  width: 290px;
   margin-right: 5px
 }
 
@@ -177,6 +192,7 @@ export default {
 .captchaImg {
   position: absolute;
   bottom: 0px;
+  height: 32px;
 }
 
 .forgotPasswd {

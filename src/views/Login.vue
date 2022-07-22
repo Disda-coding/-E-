@@ -20,14 +20,14 @@
         <el-col :span="4">
           <el-checkbox v-model="checked" class="remember">记住我</el-checkbox>
         </el-col>
-        <el-col :span="4" :offset="16">
-          <el-link type="info" class="forgotPasswd" @click="">忘记密码</el-link>
+        <el-col :span="4" :offset="15">
+          <el-link type="info" class="forgotPasswd" @click="forgot">忘记密码</el-link>
         </el-col>
       </el-row>
       <!--  通过@click来绑定事件    -->
       <el-button style="width: 100%" type="primary" @click="submitLogin">登录</el-button>
 
-      <el-link type="info" style="margin:10px 10px 0px;position: relative;right: 5px">注册用户</el-link>
+      <el-link type="info" style="margin:10px 10px 0px;position: relative;right: 5px" @click="register">注册用户</el-link>
 
 
     </el-form>
@@ -60,6 +60,13 @@ export default {
   },
 
   methods: {
+    forgot(){
+      this.$router.push('/forgot')
+    },
+    // 注册
+    register(){
+      this.$router.push('/register')
+    },
     submitLogin() {
       // 登录
       this.$refs.form.validate((valid) => { //$refs.form这里绑的是ref
@@ -135,7 +142,7 @@ export default {
   border-radius: 15px;
   background-clip: padding-box;
   margin: 180px auto;
-  width: 400px;
+  width: 375px;
   padding: 15px 35px 25px 35px;
   border: 1px solid #eaeaea;
   background: #fefefe;
@@ -147,26 +154,13 @@ export default {
   text-align: center;
 }
 
-.captcha {
-  width: 295px;
-  margin-right: 5px
-}
+
 
 .remember {
   text-align: left;
   margin: 0px 0px 15px 0px;
 }
 
-/*验证码*/
-.el-form-item__content {
-  display: flex;
-  align-items: center;
-}
-
-.captchaImg {
-  position: absolute;
-  bottom: 0px;
-}
 
 .forgotPasswd {
   vertical-align: middle;

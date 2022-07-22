@@ -45,7 +45,7 @@ router.beforeEach((to, from, next) => {
     }
     next();
   } else {
-    if (to.path === '/' || to.path === '/login') {
+    if (to.path === '/' || to.path === '/login'|| to.path === '/register' || to.path === '/forgot') {
       next();
     } else {
       next('/?redirect=' + to.path);
