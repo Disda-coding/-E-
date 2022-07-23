@@ -2,8 +2,18 @@
   <div>
     <el-container>
       <el-header class="homeHeader">
-        <div class="title" @click="backToHome">协同办公</div>
-
+        <div class="title" @click="backToHome">☁️E办</div>
+        <el-dropdown class="userInfo" @command="commandHandler">
+          <span class="el-dropdown-link">
+            <span class="userName">{{ user.name }}</span>
+            <i><img :src="user.userFace"></i>
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command="userinfo">个人中心</el-dropdown-item>
+            <el-dropdown-item command="setting">设置</el-dropdown-item>
+            <el-dropdown-item command="logout">注销登录</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </el-header>
       <el-container class="panel">
         <el-aside width="200px">
@@ -34,7 +44,7 @@
           <div class="homeWelcome" v-if="this.$router.currentRoute.path==='/home'">
             欢迎来到协同办公！
           </div>
-          <router-view/>
+          <router-view class="homeRouterView"/>
         </el-main>
       </el-container>
     </el-container>
@@ -56,7 +66,7 @@ export default {
 
   data(){
     return {
-
+      user: JSON.parse(window.sessionStorage.getItem('user'))
     }
   },
   computed: {
@@ -70,7 +80,35 @@ export default {
     backToHome(){
       this.$router.replace("/home")
     },
-
+    commandHandler(command) {
+      if (command === 'logout') {
+        // 弹框提示用户是否要删除
+        this.$confirm('此操作将注销登录, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          // 注销登录
+          this.postRequest('/logout')
+          // 清空用户信息
+          window.sessionStorage.removeItem('tokenStr')
+          window.sessionStorage.removeItem('user')
+          // 路由替换到登录页面
+          // this.$router.replace('/')
+          // 清空菜单信息；在src/utils/menus.js 中初始化菜单信息
+          this.$store.commit('initRoutes', [])
+          this.$router.replace('/')
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消注销登录'
+          });
+        });
+      }
+      if (command === 'userinfo') {
+        this.$router.push('/userinfo')
+      }
+    }
 
   }
 
@@ -105,10 +143,14 @@ export default {
 }
 
 .el-dropdown-link img {
-  width: 48px;
-  height: 48px;
+  /*width: 48px;*/
+  /*height: 48px;*/
+  /*border-radius: 50%;*/
+  /*margin-left: 8px;*/
+  padding: 2px;
+  width: 33px;
+  height: 33px;
   border-radius: 50%;
-  margin-left: 8px;
 }
 
 .homeWelcome {
@@ -125,9 +167,22 @@ export default {
 }
 .menu{
   margin-top: 10px;
+  /*height: 100%;*/
 }
+
 .main{
   padding: 10px;
+}
+.userName{
+  display: inline-block;
+  max-width: 100px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  vertical-align: top;
+  margin-top: 12px;
+  margin-right: 6px;
 }
 
 </style>

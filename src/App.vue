@@ -6,6 +6,7 @@
 
 <style>
 /*解决填不满的问题*/
+/*也可以在index里面改*/
 #app{
   position:absolute;
   top:0;

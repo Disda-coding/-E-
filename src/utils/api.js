@@ -44,7 +44,7 @@ axios.interceptors.response.use(success => {
         if (error.response.data.message) {
             Message.error({message: error.response.data.message})
         } else {
-            Message.error({message: '未知错误！'})
+            Message.error({message: '网络错误'})
         }
     }
     return
