@@ -10,16 +10,16 @@
   </div>
 </template>
 <script>
-import DepMana from "@/components/sys/basic/DepMana";  // 部门管理
-import EcMana from "@/components/sys/basic/EcMana"; // 奖惩规则
-import JobLevelMana from "@/components/sys/basic/JobLevelMana"; // 职称管理
-import PositionMana from "@/components/sys/basic/PositionMana"; // 权限组
-import PosMana from "@/components/sys/basic/PosMana"; // 职位管理
+import DepMana from "@/components/sys/basic/DepManage";  // 部门管理
+import EcMana from "@/components/sys/basic/EcManage"; // 奖惩规则
+import JobLevelMana from "@/components/sys/basic/JobLevelManage"; // 职称管理
+import PositionMana from "@/components/sys/basic/PositionManage"; // 权限组
+import PosMana from "@/components/sys/basic/PosManage"; // 职位管理
 
 export default {
   name: "SysBasic",
   components:{
-    JobLevelMana,
+    JobLevelMana,  // "job":joblevelMan 起别名
     DepMana,
     EcMana,
     PositionMana,

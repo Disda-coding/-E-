@@ -66,7 +66,7 @@ export default {
 
   data(){
     return {
-      user: JSON.parse(window.sessionStorage.getItem('user'))
+      user: JSON.parse(window.sessionStorage.getItem('user')),
     }
   },
   computed: {
@@ -117,6 +117,7 @@ export default {
 
 <style scoped>
 .homeHeader {
+  height: 60px;
   background: #FFFFFF;
   display: flex;
   align-items: center;
@@ -184,6 +185,9 @@ export default {
   margin-top: 12px;
   margin-right: 6px;
 }
-
+.el-main {
+  height: calc(100vh - 60px);
+  overflow-y: auto;
+}
 </style>
 

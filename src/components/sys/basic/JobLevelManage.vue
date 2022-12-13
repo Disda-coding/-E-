@@ -142,11 +142,11 @@ export default {
         enabled: false
       },
       titleLevels: [
-        '正高级',
-        '副高级',
-        '中级',
-        '初级',
-        '员级'
+        // '正高级',
+        // '副高级',
+        // '中级',
+        // '初级',
+        // '员级'
       ],
       jls: [], // 删除单条
       dialogVisible: false,
@@ -155,14 +155,15 @@ export default {
   },
   mounted() {
     this.initJls()
-    // this.getRequest('/system/basic/joblevel/getLevels').then(resp=>{
-    //   if(resp){
-    //     resp.forEach( item=>{
-    //       console.log(item.titleLevel)
-    //       this.titleLevels.push(item.titleLevel)
-    //     })
-    //   }
-    // })
+    // 获取职级
+    this.getRequest('/system/basic/joblevel/getLevels').then(resp=>{
+      if(resp){
+        resp.forEach( item=>{
+          console.log(item.titleLevel)
+          this.titleLevels.push(item.titleLevel)
+        })
+      }
+    })
 
   },
   methods: {

@@ -4,7 +4,7 @@
       <el-input
           size="small"
           class="addPosInput"
-          placeholder="添加职位"
+          placeholder="添加职位..."
           suffix-icon="el-icon-user"
           @keydown.enter.native="addPosition"
           v-model="pos.name">
@@ -17,7 +17,7 @@
           stripe
           size="small"
           :data="positions"
-          style="width: 70%"
+          style="width: 60%"
           @selection-change="handleSelectionChange">
         <el-table-column
             type="selection"
@@ -66,6 +66,7 @@
     <el-button size="small" style="margin-top: 8px" type="danger"
                :disabled="this.multipleSelection.length===0" @click="multiDel">批量删除
     </el-button>
+    <!--  编辑功能的弹出框  -->
     <el-dialog
         title="提示"
         :visible.sync="dialogVisible"
@@ -150,7 +151,7 @@ export default {
     },
     // 编辑职位对话框
     showEditView(index, data) {
-      Object.assign(this.updatePos, data) // 回显数据,数据拷贝
+      Object.assign(this.updatePos, data) // 回显数据,数据拷贝,防止由于数据双向绑定的脏读现象
       // this.updatePos = data // 回显数据 有bug
       this.updatePos.createDate = ''
       this.dialogVisible = true // 显示编辑框

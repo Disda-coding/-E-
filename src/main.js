@@ -14,6 +14,7 @@ import {initMenu} from "@/utils/menus";
 // import {downloadRequest} from "@/utils/download";
 
 Vue.config.productionTip = false
+// 默认使用small size
 Vue.use(ElementUI,{size:'small'});
 // 插件形式使用请求
 Vue.prototype.postRequest = postRequest

@@ -96,6 +96,7 @@ export default {
   watch: {
     // 4、观察者事件，监控输入框的值(框架方法）
     filterText(val) {
+      // filter调用:filter-node-method绑定的filterNode方法
       this.$refs.tree.filter(val);
     }
   },
@@ -196,7 +197,7 @@ export default {
     },
     // 3、事件(框架方法）
     filterNode(value, data) { // data 整行数据
-      if (!value) return true; // true 节点可以展示，false 节点隐藏
+      if (!value) return true; // true 节点可以展示，false 节点隐藏，如果没有值即没有过滤条件，返回true
       return data.name.indexOf(value) !== -1; // label: 'name'
     }
   }

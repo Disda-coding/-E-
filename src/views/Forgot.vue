@@ -77,6 +77,7 @@ export default {
       content: '发送验证码',
       totalTime: 60,
       canClick: true,
+      // disabled:false,
       ruleForm: {
         password: '123',
         checkPass: '123',

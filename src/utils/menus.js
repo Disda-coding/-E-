@@ -2,14 +2,19 @@
 
 import {getRequest} from "@/utils/api";
 
-// 菜单请求工具类
 
+// 菜单请求工具类
+// router.$addRoutes = (params) => {
+//     router.matcher = new Router({ mode: 'history' }).matcher
+//     router.addRoutes(params)
+// }
 // router 路由； store Vuex
 export const initMenu = (router, store) => {
     // 如果有数据，不做操作
     if (store.state.routes.length > 0) {
         return;
     }
+
 
     getRequest('/system/cfg/menu').then(data => {
         // 如果数据存在 格式化路由
@@ -24,6 +29,7 @@ export const initMenu = (router, store) => {
             store.dispatch('connect')
         }
     })
+    console.log(store.state)
 }
 
 export const formatRoutes = (routes) => {
