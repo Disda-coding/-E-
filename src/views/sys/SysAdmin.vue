@@ -3,7 +3,7 @@
     <!-- 1、 -->
     <div style="display: flex;justify-content: center;margin-top: 10px;">
       <!-- 9、v-model="keywords" \ @click="doSearch">搜索 -->
-      <el-input v-model="keywords" placeholder="通过用户名搜索用户..." prefix-icon="el-icon-search"
+      <el-input v-model="keywords" placeholder="通过用户名搜索用户..."
                 style="width: 400px;margin-right: 10px;"></el-input>
       <el-button type="primary" icon="el-icon-search" @click="doSearch">搜索</el-button>
     </div>
@@ -37,11 +37,17 @@
                 inactive-text="禁用">
             </el-switch>
           </div>
-          <div>
-            用户角色：
-            <el-tag style="margin-right: 4px;" type="success" v-for="(role,index) in admin.roles" :key="index">
-              {{ role.nameZh }}
-            </el-tag>
+          <table>
+            <tr>
+              <td style="width: 60px; vertical-align:top">
+                用户角色：
+              </td>
+              <td >
+                <el-tag style="margin-right: 4px;vertical-align:top" v-for="(role,index) in admin.roles" :key="index" type="success">
+                  {{ role.nameZh }}
+                </el-tag>
+
+
             <!-- 16、更新操作员角色 弹出框、选择器、 -->
             <!-- 20、@show="showPop(admin)" -->
             <!-- 24、@hide="hidePop(admin)" hide 隐藏时触发-->
@@ -55,6 +61,7 @@
               <!-- 17、更新操作员角色 下拉框 -->
               <!-- 22、v-model="selectedRoles" 存的是1个角色id，multiple 多选，显示已有角色 -->
               <el-select v-model="selectedRoles" multiple placeholder="请选择">
+                <!--      label是给用户看的，显示的东西，value是它对应的值          -->
                 <el-option
                     v-for="(r,index) in allRoles"
                     :key="index"
@@ -65,7 +72,9 @@
               <!-- 3个点按钮 ... -->
               <el-button slot="reference" type="text" icon="el-icon-more"></el-button>
             </el-popover>
-          </div>
+              </td>
+            </tr>
+          </table>
           <div>备注：{{ admin.remark }}</div>
         </div>
       </el-card>
@@ -128,7 +137,7 @@ export default {
     },
     // 21、下拉框获取所有用户角色
     showPop(admin) {
-      this.initAllRoles()
+      if (this.allRoles === null || this.allRoles.length == 0) this.initAllRoles()
       let roles = admin.roles // 拿到整个数组
       this.selectedRoles = []
       roles.forEach(r => {
@@ -189,16 +198,23 @@ export default {
 <style>
 /* 7 */
 .admin-container {
-  margin-top: 10px;
+  margin: 20px 20px;
   display: flex;
-  justify-content: space-around; /* 在弹性盒对象的 <div> 元素中的各项周围留有空白：*/
+  justify-content: space-between; /* 在弹性盒对象的 <div> 元素中的各项周围留有空白：*/
+  /*align-content: flex-start;*/
   flex-wrap: wrap; /* 自动换行 */
 }
 
 .admin-card {
   width: 350px;
   margin-bottom: 20px;
+
 }
+
+/*可能还有些许bug，实现第二行左对齐*/
+/*.admin-card:last-child{*/
+/*  margin-right: auto;*/
+/*}*/
 
 .userFace-img {
   width: 72px;
@@ -216,5 +232,11 @@ export default {
 .userinfo-container {
   font-size: 12px;
   color: #3e9ef5;
+}
+
+.admin-roles {
+  margin-right: 50px;
+  width: 300px;
+
 }
 </style>

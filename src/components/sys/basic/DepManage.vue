@@ -4,7 +4,8 @@
     <el-input
         placeholder="请输入部门名称进行搜索..."
         prefix-icon="el-icon-search"
-        v-model="filterText">
+        v-model="filterText"
+    style="margin-bottom: 8px">
     </el-input>
     <!-- 9、:expand-on-click-node="false" 点击小三角箭头才会展开
             :default-expand-all="false"	设置默认不展开所有节点 -->
@@ -19,7 +20,8 @@
       <!-- 8、style="display: flex;justify-content: space-between;width: 100% 父容器宽度" 让添加和删除按键居右 -->
       <span class="custom-tree-node" slot-scope="{ node, data }"
             style="display: flex;justify-content: space-between;width: 100%">
-        <span>{{ data.name }}</span>
+        <span>{{ node.label }}</span>
+        <!--   node.label 相当于 data.name，defaultProps中起了别名     -->
         <span>
           <el-button
               plain
@@ -125,7 +127,7 @@ export default {
     deleteDep(data) {
       // console.log(data)
       if (data.isParent) {
-        this.$message.error('父部门删除失败！')
+        this.$message.error('请先删除子部门！')
       } else {
         this.$confirm('此操作将永久删除该[' + data.name + ']部门, 是否继续?', '提示', {
           confirmButtonText: '确定',
@@ -154,6 +156,7 @@ export default {
       this.pname = ''
     },
     // 22、 递归查询所有部门信息，deps 查询到的整个数组，dep 添加的部门
+    //TODO: 后期优化复杂度
     addDep2Deps(deps, dep) {
       for (let i = 0; i < deps.length; i++) {
         let d = deps[i] // 父部门
@@ -174,7 +177,7 @@ export default {
         if (resp) {
           // console.log(resp)
           this.dialogVisible = false // 关闭对话框
-          this.addDep2Deps(this.deps, resp.data) // 23、【无效】手动插入部门 显示添加后的数据
+          this.addDep2Deps(this.deps, resp.obj) // 23、【无效】手动插入部门 显示添加后的数据
           this.initDep() // 21、调用初始化方法 清空数据
         }
       })
