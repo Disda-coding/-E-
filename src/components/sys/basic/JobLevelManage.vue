@@ -16,6 +16,7 @@
     <div style="margin-top: 10px;">
       <el-table
           :data="jls"
+          height="400px"
           stripe
           border
           size="small"

@@ -1,10 +1,11 @@
 <template>
   <div id="list">
-    <ul style="padding-left: 0;">
+    <ul style="padding-left: 0;margin-top: 0px">
       <li v-for="item in admins" :class="{ active: currentSession?item.username === currentSession.username:false }"
           v-on:click="changecurrentSession(item)"><!--   :class="[item.id === currentSession ? 'active':'']" -->
         <!-- 未读消息提示 小红点  <el-badge is-dot> </el-badge> -->
-        <el-badge is-dot :is-dot="idDot[user.username+'#'+item.username]"><img class="avatar" :src="item.userFace" :alt="item.name"></el-badge>
+        <el-badge is-dot :is-dot="idDot[user.username+'#'+item.username]"><img class="avatar" :src="item.userFace"
+                                                                               :alt="item.name"></el-badge>
         <p class="name">{{ item.name }}</p>
       </li>
     </ul>
@@ -18,7 +19,7 @@ export default {
   name: 'list',
   data() {
     return {
-      user:JSON.parse(window.sessionStorage.getItem('user'))
+      user: JSON.parse(window.sessionStorage.getItem('user'))
     }
   },
   computed: mapState([

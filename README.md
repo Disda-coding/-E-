@@ -37,5 +37,5 @@ npm run build
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
 # todolist
-- 分页
+- 聊天组件的搜索
 - tree组件一闪而过

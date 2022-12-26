@@ -15,6 +15,7 @@
       <el-table
           border
           stripe
+          height="400px"
           size="small"
           :data="positions"
           style="width: 60%"

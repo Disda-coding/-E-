@@ -7,6 +7,9 @@ import Home from "../views/Home"
 import LoginC from "@/views/LoginC";
 import Register from "@/views/Register";
 import Forgot from "@/views/Forgot";
+import FriendChat from "@/views/chat/FriendChat";
+import AdminInfo from "@/views/AdminInfo";
+
 // 开启路由
 Vue.use(VueRouter)
 // 配置路由
@@ -36,11 +39,20 @@ const routes = [
     hidden: true
   },
   {
-    path: "/home",
-    name: "Home",
+    path: '/home',
+    name: 'Home',
     component: Home,
-    //使得组件内的router生效，而不是跳进app.vue的路由中
     children: [
+      {
+        path: '/chat',
+        name: '在线聊天',
+        component: FriendChat
+      },
+      {
+        path: '/userinfo',
+        name: '个人中心',
+        component: AdminInfo
+      }
     ]
   }
 ]

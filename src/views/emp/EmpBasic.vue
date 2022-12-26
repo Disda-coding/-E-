@@ -2,6 +2,11 @@
   <div>
     <div>
       <div style="display: flex;justify-content: space-between">
+        <!-- 1、 -->
+        <!-- 20、搜索 v-model="empName" <el-input @keydown.enter.native="initEmps" 回车键调用初始化会员方法
+             21、@click="initEmps">搜索</el-button>
+             22、清空 clearable @clear="initEmps" -->
+        <!-- 28-8  :disabled="showAdvanceSearchVisible" -->
         <div>
           <el-input placeholder="请输入员工名进行搜索，可以直接回车搜索..."
                     clearable
@@ -11,6 +16,8 @@
           <el-button icon="el-icon-search" type="primary" @click="initEmps" :disabled="showAdvanceSearchView">
             搜索
           </el-button>
+          <!-- 28-3 @click="showAdvanceSearchVisible = !showAdvanceSearchVisible" -->
+          <!-- 28-5 判断图标样式 :class="showAdvanceSearchVisible?'fa fa-angle-double-up':'fa fa-angle-double-down'"-->
           <el-button type="primary" @click="showAdvanceSearchView = !showAdvanceSearchView">
             <i :class="showAdvanceSearchView?'fa fa-angle-double-up':'fa fa-angle-double-down'"
                aria-hidden="true"></i>
@@ -18,6 +25,10 @@
           </el-button>
         </div>
         <div>
+          <!-- 27-1、3 导入数据 上传组件 用自己的按钮 -->
+          <!-- 27-5 on-success 文件上传成功时的钩子; on-error 文件上传失败时的钩子; -->
+          <!-- 27-8 导入的时候禁用导入按钮 :disabled="importDataDisabled"  -->
+          <!-- 27-11 :headers="headers" 设置上传的请求头部 -->
           <el-upload
               :show-file-list="false"
               :before-upload="beforeUpload"
@@ -31,17 +42,23 @@
               {{ importDataBtnText }}
             </el-button>
           </el-upload>
+          <!-- 26-1、导出数据 @click="exportData" -->
           <el-button type="success" @click="exportData" icon="el-icon-download">
             导出数据
           </el-button>
+          <!-- 23-3、 @click="showAddEmpView" -->
           <el-button type="primary" icon="el-icon-plus" @click="showAddEmpView">
             添加用户
           </el-button>
         </div>
       </div>
+      <!-- 28-1 高级搜索条件框 -->
+      <!-- 28-4 高级搜索条件框 v-show="showAdvanceSearchVisible" -->
+      <!-- 28-6 添加展开动画效果 <transition name="fade"> 包含整个搜索条件框 </transition> -->
+      <!-- 30-2 绑定搜索条件数据 v-model="searchValue.xxxxx" -->
       <transition name="slide-fade">
         <div v-show="showAdvanceSearchView"
-             style="border: 1px solid #409eff;border-radius: 5px;box-sizing: border-box;padding: 5px;margin: 10px 0px;">
+             style="color: #56575b;background-color: #ffffff;border-radius: 5px;border: 1px solid #fafafa;box-sizing: border-box;padding: 5px;margin: 10px 0px;">
           <el-row>
             <el-col :span="5">
               政治面貌:
@@ -130,8 +147,8 @@
               </el-date-picker>
             </el-col>
             <el-col :span="5" :offset="4">
-              <el-button size="mini">取消</el-button>
-              <el-button size="mini" icon="el-icon-search" type="primary" @click="initEmps('advanced')">搜索</el-button>
+              <el-button size="mini" icon="el-icon-search" type="primary" @click="advanceSearch">搜索</el-button>
+              <el-button size="mini" style="width: 72px">取消</el-button>
             </el-col>
           </el-row>
         </div>
@@ -199,7 +216,7 @@
             label="籍贯">
         </el-table-column>
         <el-table-column
-            prop="politicsstatus.name"
+            prop="politicsStatus.name"
             label="政治面貌">
         </el-table-column>
         <el-table-column
@@ -569,7 +586,7 @@ export default {
       headers: { // 27-12 定义请求头
         Authorization: window.sessionStorage.getItem('tokenStr')
       },
-      searchValue: {
+      searchValue: { // 30-1 高级搜索 条件对象
         politicId: null,
         nationId: null,
         jobLevelId: null,
@@ -582,7 +599,7 @@ export default {
       importDataBtnText: '导入数据',
       importDataBtnIcon: 'el-icon-upload2',
       importDataDisabled: false,
-      showAdvanceSearchView: false,
+      showAdvanceSearchView: false, // 28-2 高级搜索框 动态效果
       allDeps: [],
       emps: [],
       loading: false,
@@ -598,7 +615,7 @@ export default {
       politicsstatus: [],
       positions: [],
       tiptopDegrees: ['本科', '大专', '硕士', '博士', '高中', '初中', '小学', '其他'],
-      inputDepName: '所属部门',
+      inputDepName: '',
       emp: {
         name: "",
         gender: "",
@@ -697,15 +714,20 @@ export default {
       this.importDataBtnText = '导入数据';
       this.importDataBtnIcon = 'el-icon-upload2';
       this.importDataDisabled = false;
+      this.$message({
+        type:'error',
+        message:'网络异常，导入失败！'
+      })
     },
     onSuccess(response, file, fileList) {
+      console.log(response)
       this.importDataBtnText = '导入数据';
       this.importDataBtnIcon = 'el-icon-upload2';
       this.importDataDisabled = false;
       this.initEmps();
       this.$message({
-        type: 'success',
-        message: '上传成功'
+        type: response.code==200?'success':'error',
+        message: response.message
       });
     },
     beforeUpload() {
@@ -748,7 +770,7 @@ export default {
       this.inputDepName = '';
     },
     showEditEmpView(data) {
-      this.initPositions();
+      // this.initPositions();
       this.title = '编辑员工信息';
       this.emp = data;
       this.inputDepName = data.department.name;
@@ -879,31 +901,54 @@ export default {
       this.getMaxWordID();
       this.dialogVisible = true;
     },
+    advanceSearch(){
+      let advUrl = '/employee/basic/advanceSearch/?page=' + this.page + '&size=' + this.size;
+      console.log(this.searchValue)
+      this.postRequest(advUrl,this.searchValue).then(resp => {
+        this.loading = false;
+        // this.advanced
+        this.inputDepName = ''
+        this.searchValue = { // 30-1 高级搜索 条件对象
+          politicId: null,
+          nationId: null,
+          jobLevelId: null,
+          posId: null,
+          engageForm: null,
+          departmentId: null,
+          beginDateScope: null
+        }
+        if (resp) {
+          this.emps = resp.data;
+          this.total = resp.total;
+        }
+      });
+    },
     initEmps(type) {
       this.loading = true;
       let url = '/employee/basic/?page=' + this.page + '&size=' + this.size;
+      // 为了restful，不用post就很麻烦,如果不为了复用接口可以分两个写
       if (type && type == 'advanced') {
-        if (this.searchValue.politicId) {
-          url += '&politicId=' + this.searchValue.politicId;
-        }
-        if (this.searchValue.nationId) {
-          url += '&nationId=' + this.searchValue.nationId;
-        }
-        if (this.searchValue.jobLevelId) {
-          url += '&jobLevelId=' + this.searchValue.jobLevelId;
-        }
-        if (this.searchValue.posId) {
-          url += '&posId=' + this.searchValue.posId;
-        }
-        if (this.searchValue.engageForm) {
-          url += '&engageForm=' + this.searchValue.engageForm;
-        }
-        if (this.searchValue.departmentId) {
-          url += '&departmentId=' + this.searchValue.departmentId;
-        }
-        if (this.searchValue.beginDateScope) {
-          url += '&beginDateScope=' + this.searchValue.beginDateScope;
-        }
+        // if (this.searchValue.politicId) {
+        //   url += '&politicId=' + this.searchValue.politicId;
+        // }
+        // if (this.searchValue.nationId) {
+        //   url += '&nationId=' + this.searchValue.nationId;
+        // }
+        // if (this.searchValue.jobLevelId) {
+        //   url += '&jobLevelId=' + this.searchValue.jobLevelId;
+        // }
+        // if (this.searchValue.posId) {
+        //   url += '&posId=' + this.searchValue.posId;
+        // }
+        // if (this.searchValue.engageForm) {
+        //   url += '&engageForm=' + this.searchValue.engageForm;
+        // }
+        // if (this.searchValue.departmentId) {
+        //   url += '&departmentId=' + this.searchValue.departmentId;
+        // }
+        // if (this.searchValue.beginDateScope) {
+        //   url += '&beginDateScope=' + this.searchValue.beginDateScope;
+        // }
       } else {
         url += "&name=" + this.keyword;
       }
@@ -920,6 +965,7 @@ export default {
 </script>
 
 <style>
+/*28-7 展开收起条件搜索框动画样式 */
 /* 可以设置不同的进入和离开动画 */
 /* 设置持续时间和动画函数 */
 .slide-fade-enter-active {

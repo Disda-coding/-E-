@@ -3,17 +3,28 @@
     <el-container>
       <el-header class="homeHeader">
         <div class="title" @click="backToHome">☁️E办</div>
-        <el-dropdown class="userInfo" @command="commandHandler">
+        <div style="display: flex;">
+          <el-button icon="el-icon-bell"
+                     type="text"
+                     size="normal"
+                     style="color: black;
+                     padding-top: 14px;
+                     margin-right: 8px"
+                     @click="goChat"
+          >
+          </el-button>
+          <el-dropdown class="userInfo" @command="commandHandler">
           <span class="el-dropdown-link">
             <span class="userName">{{ user.name }}</span>
             <i><img :src="user.userFace"></i>
           </span>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="userinfo">个人中心</el-dropdown-item>
-            <el-dropdown-item command="setting">设置</el-dropdown-item>
-            <el-dropdown-item command="logout">注销登录</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="userinfo">个人中心</el-dropdown-item>
+              <el-dropdown-item command="setting">设置</el-dropdown-item>
+              <el-dropdown-item command="logout">注销登录</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
       </el-header>
       <el-container class="panel">
         <el-aside width="200px">
@@ -64,7 +75,7 @@ export default {
   // },
 
 
-  data(){
+  data() {
     return {
       user: JSON.parse(window.sessionStorage.getItem('user')),
     }
@@ -76,8 +87,12 @@ export default {
     },
 
   },
-  methods:{
-    backToHome(){
+  methods: {
+    // 1-2 进入在线聊天页面
+    goChat() {
+      this.$router.push('/chat')
+    },
+    backToHome() {
       this.$router.replace("/home")
     },
     commandHandler(command) {
@@ -136,7 +151,7 @@ export default {
   /*font-family: 微软雅黑;*/
   font-family: 华文楷体;
   color: rgb(64, 158, 255);
-  dispaly:flex;
+  dispaly: flex;
 }
 
 .homeHeader .userInfo {
@@ -166,15 +181,17 @@ export default {
 .homeRouterView {
   margin-top: 10px;
 }
-.menu{
+
+.menu {
   margin-top: 10px;
   /*height: 100%;*/
 }
 
-.main{
+.main {
   padding: 10px;
 }
-.userName{
+
+.userName {
   display: inline-block;
   max-width: 100px;
   overflow: hidden;
@@ -185,6 +202,7 @@ export default {
   margin-top: 12px;
   margin-right: 6px;
 }
+
 .el-main {
   height: calc(100vh - 60px);
   overflow-y: auto;

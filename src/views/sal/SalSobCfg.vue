@@ -3,6 +3,7 @@
     <el-table
         size="mini"
         :data="emps"
+        height="490px"
         stripe
         border>
       <el-table-column
@@ -92,7 +93,7 @@
             </div>
             <el-tag>{{ scope.row.salary.name }}</el-tag>
           </el-tooltip>
-          <el-tag v-else>暂未设置</el-tag>
+          <el-tag type="success" v-else>暂未设置</el-tag>
         </template>
       </el-table-column>
       <!-- 2-1 编辑工资账套 -->

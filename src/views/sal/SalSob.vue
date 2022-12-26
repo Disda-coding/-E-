@@ -11,6 +11,7 @@
       <el-table
           :data="salaries"
           stripe
+          height="400px"
           border>
         <!-- 多选框 type="selection" -->
         <el-table-column
@@ -116,7 +117,9 @@
         <!-- 3-5  :active="activeItemIndex" -->
         <el-steps direction="vertical" :active="activeItemIndex">
           <!-- 3-3 循环遍历数据 -->
-          <el-step :title="itemName" v-for="(itemName,index) in salaryItemName" :key="index"></el-step>
+          <div v-for="(itemName,index) in salaryItemName" :key="index" @click="jumpToIndex(index)">
+            <el-step :title="itemName" ></el-step>
+          </div>
         </el-steps>
         <!-- 3-4 循环遍历数据 -->
         <!-- 3-7 v-show="activeItemIndex = index" 与下标相等才展示 -->
@@ -127,8 +130,8 @@
       </div>
       <span slot="footer" class="dialog-footer">
         <!-- 3-10 按钮判断根据索引显示 文字提示 -->
-        <el-button @click="preStep">{{ activeItemIndex === 10 ? '取消' : '上一步' }}</el-button>
-        <el-button type="primary" @click="nextStep">{{ activeItemIndex === 10 ? '完成' : '下一步' }}</el-button>
+        <el-button @click="preStep" :disabled="activeItemIndex===0?true:false">{{ activeItemIndex === salaryItemName.length - 1? '取消' : '上一步' }}</el-button>
+        <el-button type="primary" @click="nextStep">{{ activeItemIndex === salaryItemName.length -1 ? '完成' : '下一步' }}</el-button>
       </span>
     </el-dialog>
   </div>
@@ -175,6 +178,9 @@ export default {
     this.initSalaries()
   },
   methods: {
+    jumpToIndex(index){
+      this.activeItemIndex=index;
+    },
     // 6-5 点击编辑显示对话框
     showEditSalaryView(data) {
       this.dialogTitle = '编辑工资账套' // 设置标题
@@ -216,14 +222,11 @@ export default {
     preStep() { // 3-13 上一步 取消
       if (this.activeItemIndex === 0) {
         return
-      } else if (this.activeItemIndex === 10) {
-        this.dialogVisible = false;
-        return;
       }
       this.activeItemIndex--
     },
     nextStep() { // 3-12 下一步 完成
-      if (this.activeItemIndex === 10) {
+      if (this.activeItemIndex === this.salaryItemName.length-1) {
         // alert("ok")
         // console.log(this.salary)
         // 4-4 添加工资账套
