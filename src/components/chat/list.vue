@@ -17,30 +17,47 @@ import {mapGetters, mapState} from 'vuex'
 
 export default {
   name: 'list',
+  cSession:null,
   data() {
     return {
       user: JSON.parse(window.sessionStorage.getItem('user'))
     }
   },
-  computed:{
+  destroyed(){
+    // 离开页面触发，防止出现无法接受消息的bug
+    console.log("this.cSession"+this.cSession)
+    if(typeof(this.cSession)!=='undefined'){
+      this.cSession.username=""
+      this.$store.commit('changecurrentSession', this.cSession)
+      console.log(this.cSession)
+    }
+  },
+  computed: {
     ...mapState([
       'idDot',
       'admins',
       'currentSession'
     ]),
     ...mapGetters([
-        'admins_get'
+      'admins_get',
+      'filterkey_get'
     ])
-  },
-
-  watch: {
-    admins_get: function (val) {
-      console.log("messArray_get " + val)
-    }
   },
   methods: {
     changecurrentSession: function (currentSession) {
+      console.log(currentSession)
       this.$store.commit('changecurrentSession', currentSession)
+      this.cSession = currentSession;
+    }
+  },
+  watch: {
+    //观察filterkey_get的值，如果发生变化就刷新admin数组
+    filterkey_get: function (val) {
+      this.getRequest('/chat/admin?keywords=' + val).then(resp => {
+        if (resp) {
+          this.$store.commit("INIT_ADMINS", resp)
+        }
+      })
     }
   }
 }

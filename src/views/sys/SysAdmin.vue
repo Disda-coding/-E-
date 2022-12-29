@@ -82,28 +82,28 @@
       </el-card>
     </div>
     <!--  添加管理员  -->
-    <el-dialog
-        title="添加管理员"
-        :visible.sync="showAddAdmin"
-        width="30%"
-        :before-close="handleClose">
-      <!--  使用默认密码和头像    -->
-      <el-form :model="adminForm">
-        <el-form-item label="活动名称" :label-width="formLabelWidth">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="活动区域" :label-width="formLabelWidth">
-          <el-select v-model="form.region" placeholder="请选择活动区域">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
-          </el-select>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-        <el-button @click="dialogVisible = false">取 消</el-button>
-      </span>
-    </el-dialog>
+<!--    <el-dialog-->
+<!--        title="添加管理员"-->
+<!--        :visible.sync="showAddAdmin"-->
+<!--        width="30%"-->
+<!--        :before-close="handleClose">-->
+<!--      &lt;!&ndash;  使用默认密码和头像    &ndash;&gt;-->
+<!--      <el-form :model="adminForm">-->
+<!--        <el-form-item label="活动名称" :label-width="formLabelWidth">-->
+<!--          <el-input v-model="form.name" autocomplete="off"></el-input>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="活动区域" :label-width="formLabelWidth">-->
+<!--          <el-select v-model="form.region" placeholder="请选择活动区域">-->
+<!--            <el-option label="区域一" value="shanghai"></el-option>-->
+<!--            <el-option label="区域二" value="beijing"></el-option>-->
+<!--          </el-select>-->
+<!--        </el-form-item>-->
+<!--      </el-form>-->
+<!--      <span slot="footer" class="dialog-footer">-->
+<!--        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>-->
+<!--        <el-button @click="dialogVisible = false">取 消</el-button>-->
+<!--      </span>-->
+<!--    </el-dialog>-->
   </div>
 </template>
 <script>

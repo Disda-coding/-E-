@@ -40,3 +40,11 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 - 聊天组件的搜索（vuex监听
 - tree组件一闪而过
 - 聊天持久化
+- 切换页面，聊天窗口还是刚刚那个人的情况下不会提醒 done！
+- 本地持久化bug
+
+# Imporve
+- 添加了聊天联系人搜索功能
+- 使得主页header可以根据是否有消息进行样式改变
+- 点击消息会跳转到聊天当前人
+

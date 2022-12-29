@@ -4,12 +4,12 @@
       <el-header class="homeHeader">
         <div class="title" @click="backToHome">☁️E办</div>
         <div style="display: flex;">
-          <el-button icon="el-icon-bell"
+        <!--          -->
+          <el-button :icon="!hasMsg?'el-icon-bell':'el-icon-message-solid'"
                      type="text"
+                     class="bell"
                      size="normal"
-                     style="color: black;
-                     padding-top: 14px;
-                     margin-right: 8px"
+                      :style="!hasMsg?('color:black'):('color:red')"
                      @click="goChat"
           >
           </el-button>
@@ -63,6 +63,7 @@
 </template>
 
 <script>
+import {mapGetters,mapState} from 'vuex'
 export default {
   name: "Home",
   // //创建前设置
@@ -82,10 +83,12 @@ export default {
   },
   computed: {
     // 从 vuex 获取 routes
+    ...mapState([
+        'hasMsg'
+    ]),
     routes() {
       return this.$store.state.routes
     },
-
   },
   methods: {
     // 1-2 进入在线聊天页面
@@ -190,7 +193,10 @@ export default {
 .main {
   padding: 10px;
 }
-
+.bell{
+  padding-top: 14px;
+  margin-right: 8px
+}
 .userName {
   display: inline-block;
   max-width: 100px;
