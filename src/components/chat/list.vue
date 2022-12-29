@@ -1,7 +1,7 @@
 <template>
   <div id="list">
     <ul style="padding-left: 0;margin-top: 0px">
-      <li v-for="item in admins" :class="{ active: currentSession?item.username === currentSession.username:false }"
+      <li v-for="item in admins_get" :class="{ active: currentSession?item.username === currentSession.username:false }"
           v-on:click="changecurrentSession(item)"><!--   :class="[item.id === currentSession ? 'active':'']" -->
         <!-- 未读消息提示 小红点  <el-badge is-dot> </el-badge> -->
         <el-badge is-dot :is-dot="idDot[user.username+'#'+item.username]"><img class="avatar" :src="item.userFace"
@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import {mapGetters, mapState} from 'vuex'
 
 export default {
   name: 'list',
@@ -22,11 +22,22 @@ export default {
       user: JSON.parse(window.sessionStorage.getItem('user'))
     }
   },
-  computed: mapState([
-    'idDot',
-    'admins',
-    'currentSession'
-  ]),
+  computed:{
+    ...mapState([
+      'idDot',
+      'admins',
+      'currentSession'
+    ]),
+    ...mapGetters([
+        'admins_get'
+    ])
+  },
+
+  watch: {
+    admins_get: function (val) {
+      console.log("messArray_get " + val)
+    }
+  },
   methods: {
     changecurrentSession: function (currentSession) {
       this.$store.commit('changecurrentSession', currentSession)

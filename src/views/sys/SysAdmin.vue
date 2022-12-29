@@ -6,6 +6,7 @@
       <el-input v-model="keywords" placeholder="通过用户名搜索用户..."
                 style="width: 400px;margin-right: 10px;"></el-input>
       <el-button type="primary" icon="el-icon-search" @click="doSearch">搜索</el-button>
+      <el-button type="success" icon="el-icon-plus" @click="showAddAdmin">添加</el-button>
     </div>
     <!-- 2、6、 -->
     <div class="admin-container">
@@ -42,36 +43,37 @@
               <td style="width: 60px; vertical-align:top">
                 用户角色：
               </td>
-              <td >
-                <el-tag style="margin-right: 4px;vertical-align:top" v-for="(role,index) in admin.roles" :key="index" type="success">
+              <td>
+                <el-tag style="margin-right: 4px;vertical-align:top" v-for="(role,index) in admin.roles" :key="index"
+                        type="success">
                   {{ role.nameZh }}
                 </el-tag>
 
 
-            <!-- 16、更新操作员角色 弹出框、选择器、 -->
-            <!-- 20、@show="showPop(admin)" -->
-            <!-- 24、@hide="hidePop(admin)" hide 隐藏时触发-->
-            <el-popover
-                placement="right"
-                title="角色列表"
-                width="200"
-                @show="showPop(admin)"
-                @hide="hidePop(admin)"
-                trigger="click">
-              <!-- 17、更新操作员角色 下拉框 -->
-              <!-- 22、v-model="selectedRoles" 存的是1个角色id，multiple 多选，显示已有角色 -->
-              <el-select v-model="selectedRoles" multiple placeholder="请选择">
-                <!--      label是给用户看的，显示的东西，value是它对应的值          -->
-                <el-option
-                    v-for="(r,index) in allRoles"
-                    :key="index"
-                    :label="r.nameZh"
-                    :value="r.id">
-                </el-option>
-              </el-select>
-              <!-- 3个点按钮 ... -->
-              <el-button slot="reference" type="text" icon="el-icon-more"></el-button>
-            </el-popover>
+                <!-- 16、更新操作员角色 弹出框、选择器、 -->
+                <!-- 20、@show="showPop(admin)" -->
+                <!-- 24、@hide="hidePop(admin)" hide 隐藏时触发-->
+                <el-popover
+                    placement="right"
+                    title="角色列表"
+                    width="200"
+                    @show="showPop(admin)"
+                    @hide="hidePop(admin)"
+                    trigger="click">
+                  <!-- 17、更新操作员角色 下拉框 -->
+                  <!-- 22、v-model="selectedRoles" 存的是1个角色id，multiple 多选，显示已有角色 -->
+                  <el-select v-model="selectedRoles" multiple placeholder="请选择">
+                    <!--      label是给用户看的，显示的东西，value是它对应的值          -->
+                    <el-option
+                        v-for="(r,index) in allRoles"
+                        :key="index"
+                        :label="r.nameZh"
+                        :value="r.id">
+                    </el-option>
+                  </el-select>
+                  <!-- 3个点按钮 ... -->
+                  <el-button slot="reference" type="text" icon="el-icon-more"></el-button>
+                </el-popover>
               </td>
             </tr>
           </table>
@@ -79,6 +81,29 @@
         </div>
       </el-card>
     </div>
+    <!--  添加管理员  -->
+    <el-dialog
+        title="添加管理员"
+        :visible.sync="showAddAdmin"
+        width="30%"
+        :before-close="handleClose">
+      <!--  使用默认密码和头像    -->
+      <el-form :model="adminForm">
+        <el-form-item label="活动名称" :label-width="formLabelWidth">
+          <el-input v-model="form.name" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="活动区域" :label-width="formLabelWidth">
+          <el-select v-model="form.region" placeholder="请选择活动区域">
+            <el-option label="区域一" value="shanghai"></el-option>
+            <el-option label="区域二" value="beijing"></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        <el-button @click="dialogVisible = false">取 消</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -86,6 +111,15 @@ export default {
   name: "SysAdmin",
   data() {
     return {
+      // 注册所需信息
+      adminForm: {
+
+      },
+      // 系统内所有的角色
+      roles:[],
+      // 给与新用户的角色
+      givenRoles:[],
+      showAddAdmin: false,
       admins: [], // 3
       keywords: '', // 8、搜索关键字
       allRoles: [], // 18、更新操作员角色
@@ -96,6 +130,22 @@ export default {
     this.initAdmins() // 5
   },
   methods: {
+    showAdmin(){
+      this.showAddAdmin = true
+    },
+    //添加操作员
+    addAdmin() {
+
+    },
+
+    // 获取所有角色
+    initRoles() {
+      this.getRequest('/system/basic/permiss/').then(resp => {
+        if (resp) {
+          this.roles = resp
+        }
+      })
+    },
     // 25、更新操作员角色
     hidePop(admin) {
       let roles = []
@@ -179,6 +229,7 @@ export default {
         });
       });
     },
+
     // 10 搜索
     doSearch() {
       this.initAdmins()

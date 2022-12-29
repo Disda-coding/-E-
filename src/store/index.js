@@ -10,6 +10,10 @@ const now = new Date();
 
 // 导入 Vuex
 const store = new Vuex.Store({
+    //网上的方法，创建getters，防止组件里面监听不到变化
+    getters : {
+        admins_get:state=>state.admins,
+    },
     state: {
         routes: [],
         sessions: {},
@@ -98,18 +102,42 @@ const store = new Vuex.Store({
                     context.commit('INIT_ADMINS', resp)
                 }
             })
-        }
+        },
+        // updateData(context,params){
+        //     getRequest('/chat/admin?keywords='+params).then(resp => {
+        //         if (resp) {
+        //             context.commit('INIT_ADMINS', resp)
+        //         }
+        //     })
+        // }
     }
 })
 
+// store.watch(function (state) {
+//     return state.filterKey
+// }, function (val) {
+//         getRequest('/chat/admin?keywords='+params).then(resp => {
+//             if (resp) {
+//                 context.commit('INIT_ADMINS', resp)
+//             }
+// }, {
+//     deep: true/*这个貌似是开启watch监测的判断,官方说明也比较模糊*/
+// }),
 store.watch(function (state) {
-    return state.sessions
-}, function (val) {
-    console.log('CHANGE: ', val);
-    localStorage.setItem('vue-chat-session', JSON.stringify(val));
-}, {
-    deep: true/*这个貌似是开启watch监测的判断,官方说明也比较模糊*/
-})
+        return state
+    }, function (val) {
+        console.log('CHANGE: ', val.sessions);
+        localStorage.setItem('vue-chat-session', JSON.stringify(val.sessions));
+        // 监听filterKey用户输入，需要分开，否则一直发请求
+        getRequest('/chat/admin?keywords=' + val.filterKey).then(resp => {
+            if (resp) {
+                val.admins=resp
+            }
+        })
+    }, {
+        deep: true/*这个貌似是开启watch监测的判断,官方说明也比较模糊*/
+    }
+)
 
 
 export default store;

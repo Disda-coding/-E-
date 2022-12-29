@@ -17,6 +17,9 @@ export default {
     return {
       user:JSON.parse(window.sessionStorage.getItem("user"))
     }
+  },
+  methods:{
+
   }
 }
 </script>

@@ -37,5 +37,6 @@ npm run build
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
 # todolist
-- 聊天组件的搜索
+- 聊天组件的搜索（vuex监听
 - tree组件一闪而过
+- 聊天持久化
