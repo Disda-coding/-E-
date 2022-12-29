@@ -17,7 +17,10 @@ import {mapGetters, mapState} from 'vuex'
 
 export default {
   name: 'list',
-  cSession:null,
+  cSession:{
+    userFace: '',
+    username: ''
+  },
   data() {
     return {
       user: JSON.parse(window.sessionStorage.getItem('user'))
@@ -25,12 +28,12 @@ export default {
   },
   destroyed(){
     // 离开页面触发，防止出现无法接受消息的bug
-    console.log("this.cSession"+this.cSession)
-    if(typeof(this.cSession)!=='undefined'){
-      this.cSession.username=""
+    // console.log("leave"+this.cSession)
+    // if(typeof(this.cSession)!=='undefined'){
+    //   this.cSession.username=""
       this.$store.commit('changecurrentSession', this.cSession)
-      console.log(this.cSession)
-    }
+    //   console.log(this.cSession)
+    // }
   },
   computed: {
     ...mapState([
@@ -45,9 +48,7 @@ export default {
   },
   methods: {
     changecurrentSession: function (currentSession) {
-      console.log(currentSession)
       this.$store.commit('changecurrentSession', currentSession)
-      this.cSession = currentSession;
     }
   },
   watch: {
