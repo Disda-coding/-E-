@@ -2,6 +2,9 @@
 技术栈
 - Vue 2
 - Vuex
+- Vue-Router
+- js-file-download
+- font-awesome
 - Axios
 - ES6
 - Webpack
@@ -48,9 +51,10 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 # todolist
 - 聊天组件的搜索（vuex监听
 - tree组件一闪而过
-- 聊天持久化
-- 用户是否在线
-- 用户分组
+- 聊天持久化（
+- 用户是否在线（
+- 用户分组（
+- 对比vuehr
 
 # Imporve
 - 添加了聊天联系人搜索功能

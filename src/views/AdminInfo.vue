@@ -1,13 +1,21 @@
 <template>
   <div>
     <el-card class="box-card" style="width: 400px;">
-      <div slot="header" class="clearfix">
+      <div slot="header" >
         <span>{{ admin.name }}</span>
       </div>
       <div>
         <div>
           <div style="display: flex;justify-content: center;">
-            <img title="点击修改用户头像" :src="admin.userFace" style="height: 100px;width: 100px;border-radius: 50px;" alt="">
+            <el-upload
+                :show-file-list="false"
+                :headers="headers"
+                :data="admin"
+                :on-success="onSuccess"
+                action="/admin/userface">
+              <img title="点击修改用户头像" :src="admin.userFace" style="height: 100px;width: 100px;border-radius: 50px;" alt="">
+            </el-upload>
+
           </div>
           <div>电话号码：
             <el-tag>{{ admin.telephone }}</el-tag>
@@ -122,6 +130,9 @@ export default {
     }
 
     return {
+      headers:{
+        Authorization:window.sessionStorage.getItem('tokenStr')
+      },
       admin: null,
       admin2: null, // 1-5 编辑的对象
       dialogVisible: false, // 1-2 编辑用户信息
@@ -149,6 +160,10 @@ export default {
     this.initAdmin()
   },
   methods: {
+    // 头像
+    onSuccess(){
+      this.initAdmin()
+    },
     // 2-7 预校验 提交表单
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {

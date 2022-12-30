@@ -79,7 +79,8 @@ export default {
 
   data() {
     return {
-      user: JSON.parse(window.sessionStorage.getItem('user')),
+      // 获取用户信息，将字符串转对象
+      // user: JSON.parse(window.sessionStorage.getItem('user'))
     }
   },
   computed: {
@@ -90,6 +91,10 @@ export default {
     routes() {
       return this.$store.state.routes
     },
+    // 变成计算属性，使得可以进行动态更新
+    user() {
+      return this.$store.state.currentAdmin
+    }
   },
   methods: {
     // 1-2 进入在线聊天页面
