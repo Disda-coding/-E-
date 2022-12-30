@@ -17,13 +17,14 @@ import {mapGetters, mapState} from 'vuex'
 
 export default {
   name: 'list',
-  cSession:{
-    userFace: '',
-    username: ''
-  },
+
   data() {
     return {
-      user: JSON.parse(window.sessionStorage.getItem('user'))
+      user: JSON.parse(window.sessionStorage.getItem('user')),
+      cSession:{
+        userFace: '',
+        username: ''
+      }
     }
   },
   destroyed(){

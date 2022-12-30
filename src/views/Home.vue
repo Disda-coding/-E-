@@ -29,6 +29,7 @@
       <el-container class="panel">
         <el-aside width="200px">
           <!--          router 开启路由模式（以index作为路径路由跳转） -->
+          <!--      有点封装太死了，想要获取点击修改样式很麻烦，因为可能需要跳转的时候会有小细节的问题，不过不重要，不纠结了    -->
           <el-menu router unique-opened class="menu">
             <template v-for="(item,index) in routes">
               <el-submenu :index="index +''"

@@ -1,10 +1,9 @@
-import Vue, {watch} from 'vue'
+import Vue from 'vue'
 import Vuex from 'vuex'
 import {getRequest} from "@/utils/api";
 import SockJS from 'sockjs-client' // 2-1 在线聊天-导入下载的在线聊天依赖
 import Stomp from 'stompjs' // 2-1 在线聊天-导入下载的在线聊天依赖
 import {Notification} from 'element-ui';
-import adminInfo from "@/views/AdminInfo";
 import Router from "@/router";
 
 Vue.use(Vuex)
@@ -13,9 +12,9 @@ const now = new Date();
 // 导入 Vuex
 const store = new Vuex.Store({
     //网上的方法，创建getters，防止组件里面监听不到变化
-    getters : {
-        admins_get:state=>state.admins,
-        filterkey_get:state=>state.filterKey
+    getters: {
+        admins_get: state => state.admins,
+        filterkey_get: state => state.filterKey
     },
     state: {
         routes: [],
@@ -27,7 +26,7 @@ const store = new Vuex.Store({
         currentSession: null,
         // currentSession: -1,
         filterKey: '',
-        hasMsg:false,
+        hasMsg: false,
         stomp: null, // 2-2 在线聊天-定义对象
         idDot: {}, // 未读消息 对象
     },
@@ -40,8 +39,8 @@ const store = new Vuex.Store({
         initRoutes(state, data) {
             state.routes = data
         },
-        changehasMsg(state,msg){
-            state.hasMsg=msg
+        changehasMsg(state, msg) {
+            state.hasMsg = msg
         },
         changecurrentSession(state, currentSession) {
             state.currentSession = currentSession;
@@ -49,11 +48,11 @@ const store = new Vuex.Store({
             // console.log('idddt'+state.idDot)
             Vue.set(state.idDot, state.currentAdmin.username + '#' + state.currentSession.username, false)
             let cnt = 0
-            for(let key in state.idDot){
-                if(state.idDot[key] == true) cnt++;
+            for (let key in state.idDot) {
+                if (state.idDot[key] == true) cnt++;
             }
-            if(cnt == 0)
-                state.hasMsg=false
+            if (cnt == 0)
+                state.hasMsg = false
         },
 
         addMessage(state, msg) {
@@ -94,36 +93,34 @@ const store = new Vuex.Store({
                     let receiveMsg = JSON.parse(msg.body)
                     // 有消息发来，右下角 弹框提示
                     if (!context.state.currentSession || receiveMsg.from !== context.state.currentSession.username) {
-                        console.log("a"+receiveMsg.from)
+                        console.log("a" + receiveMsg.from)
                         Notification.info({
                             title: '【' + receiveMsg.fromNickName + '】发来一条消息',
-                            message: receiveMsg.content.length > 20 ? receiveMsg.content.substr(0, 20)+"..." : receiveMsg.content,
+                            message: receiveMsg.content.length > 20 ? receiveMsg.content.substr(0, 20) + "..." : receiveMsg.content,
                             // position: 'bottom-right'
                             offset: 50,
-                            admins:context.state.admins,
+                            admins: context.state.admins,
 
                             currentSession: {
-                                'username':receiveMsg.from,
-                                'userFace':null
-                            }
-                            ,
-                            //如何传参呢？
-                            onClick: function (){
+                                'username': receiveMsg.from,
+                                'userFace': null
+                            },
+                            //如何传参呢？在上面定义即可
+                            onClick: function () {
                                 console.log(this.admins)
                                 Router.push('/chat')
-                                for(let i in this.admins){
+                                for (let i in this.admins) {
                                     console.log(this.admins[i])
-                                    if (this.admins[i].username == this.currentSession.username){
-                                        this.currentSession.userFace=this.admins[i].userFace
+                                    if (this.admins[i].username == this.currentSession.username) {
+                                        this.currentSession.userFace = this.admins[i].userFace
                                     }
                                 }
-                                //todo: 跳转到当前 userface需要解决
                                 context.commit("changecurrentSession", this.currentSession)
                             }
                         })
                         // 有未读消息 展示小红点
                         Vue.set(context.state.idDot, context.state.currentAdmin.username + '#' + receiveMsg.from, true)
-                        context.commit('changehasMsg',true)
+                        context.commit('changehasMsg', true)
                     }
                     receiveMsg.notSelf = true;
                     receiveMsg.to = receiveMsg.from
