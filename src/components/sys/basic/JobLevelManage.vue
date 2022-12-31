@@ -158,8 +158,8 @@ export default {
     this.initJls()
     // 获取职级
     this.getRequest('/system/basic/joblevel/getLevels').then(resp=>{
-      if(resp){
-        resp.forEach( item=>{
+      if(resp.data){
+        resp.data.forEach( item=>{
           console.log(item.titleLevel)
           this.titleLevels.push(item.titleLevel)
         })
@@ -245,14 +245,10 @@ export default {
     // 获取职称列表数据
     initJls() {
       this.getRequest('/system/basic/joblevel/').then(resp => {
-        if (resp) {
-          this.jls = resp
+        if (resp.data) {
+          this.jls = resp.data
           this.jl.name = ''
           this.jl.titleLevel = ''
-          // resp.forEach( item=>{
-          //   if(this.titleLevels.indexOf(item.titleLevel)===-1)
-          //   this.titleLevels.push(item.titleLevel)
-          // })
         }
       })
     }

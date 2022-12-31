@@ -126,24 +126,24 @@ export default {
     // 获取所有选中的菜单
     initSelectedMenus(rid) { // :name="r.id"  change(rid)
       this.getRequest('/system/basic/permiss/mid/' + rid).then(resp => {
-        if (resp) {
-          this.selectedMenus = resp
+        if (resp.data) {
+          this.selectedMenus = resp.data
         }
       })
     },
     // 获取所有菜单
     initAllMenus() {
       this.getRequest('/system/basic/permiss/menus').then(resp => {
-        if (resp) {
-          this.allMenus = resp
+        if (resp.data) {
+          this.allMenus = resp.data
         }
       })
     },
     // 获取所有角色
     initRoles() {
       this.getRequest('/system/basic/permiss/').then(resp => {
-        if (resp) {
-          this.roles = resp
+        if (resp.data) {
+          this.roles = resp.data
         }
       })
     }

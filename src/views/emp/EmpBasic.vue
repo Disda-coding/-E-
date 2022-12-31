@@ -2,7 +2,11 @@
   <div>
     <div>
       <div style="display: flex;justify-content: space-between">
-
+        <!-- 1、 -->
+        <!-- 20、搜索 v-model="empName" <el-input @keydown.enter.native="initEmps" 回车键调用初始化会员方法
+             21、@click="initEmps">搜索</el-button>
+             22、清空 clearable @clear="initEmps" -->
+        <!-- 28-8  :disabled="showAdvanceSearchVisible" -->
         <div>
           <el-input placeholder="请输入员工名进行搜索，可以直接回车搜索..."
                     clearable
@@ -133,6 +137,7 @@
               入职日期:
               <el-date-picker
                   v-model="searchValue.beginDateScope"
+                  align="center"
                   type="daterange"
                   size="mini"
                   unlink-panels
@@ -143,7 +148,7 @@
               </el-date-picker>
             </el-col>
             <el-col :span="5" :offset="4">
-              <el-button size="mini" icon="el-icon-search" type="primary" @click="advanceSearch">搜索</el-button>
+              <el-button size="mini" icon="el-icon-search" type="primary" @click="initEmps('advanced')">搜索</el-button>
               <el-button size="mini" style="width: 72px">取消</el-button>
             </el-col>
           </el-row>
@@ -353,6 +358,7 @@
               <el-form-item label="出生日期:" prop="birthday">
                 <el-date-picker
                     v-model="emp.birthday"
+                    align="center"
                     size="mini"
                     type="date"
                     value-format="yyyy-MM-dd"
@@ -494,6 +500,7 @@
               <el-form-item label="入职日期:" prop="beginDate">
                 <el-date-picker
                     v-model="emp.beginDate"
+                    align="center"
                     size="mini"
                     type="date"
                     value-format="yyyy-MM-dd"
@@ -506,6 +513,7 @@
               <el-form-item label="转正日期:" prop="conversionTime">
                 <el-date-picker
                     v-model="emp.conversionTime"
+                    align="center"
                     size="mini"
                     type="date"
                     value-format="yyyy-MM-dd"
@@ -518,6 +526,7 @@
               <el-form-item label="合同起始日期:" prop="beginContract">
                 <el-date-picker
                     v-model="emp.beginContract"
+                    align="center"
                     size="mini"
                     type="date"
                     value-format="yyyy-MM-dd"
@@ -530,6 +539,7 @@
               <el-form-item label="合同终止日期:" prop="endContract">
                 <el-date-picker
                     v-model="emp.endContract"
+                    align="center"
                     size="mini"
                     type="date"
                     value-format="yyyy-MM-dd"
@@ -829,14 +839,14 @@ export default {
     },
     initPositions() {
       this.getRequest('/employee/basic/positions').then(resp => {
-        if (resp) {
-          this.positions = resp;
+        if (resp.data) {
+          this.positions = resp.data;
         }
       })
     },
     getMaxWordID() {
       this.getRequest("/employee/basic/maxWorkId").then(resp => {
-        if (resp) {
+        if (resp.data) {
           this.emp.workID = resp.data;
         }
       })
@@ -844,9 +854,9 @@ export default {
     initData() {
       if (!window.sessionStorage.getItem("nations")) {
         this.getRequest('/employee/basic/nations').then(resp => {
-          if (resp) {
-            this.nations = resp;
-            window.sessionStorage.setItem("nations", JSON.stringify(resp));
+          if (resp.data) {
+            this.nations = resp.data;
+            window.sessionStorage.setItem("nations", JSON.stringify(resp.data));
           }
         })
       } else {
@@ -854,9 +864,9 @@ export default {
       }
       if (!window.sessionStorage.getItem("joblevels")) {
         this.getRequest('/employee/basic/joblevels').then(resp => {
-          if (resp) {
-            this.joblevels = resp;
-            window.sessionStorage.setItem("joblevels", JSON.stringify(resp));
+          if (resp.data) {
+            this.joblevels = resp.data;
+            window.sessionStorage.setItem("joblevels", JSON.stringify(resp.data));
           }
         })
       } else {
@@ -864,9 +874,9 @@ export default {
       }
       if (!window.sessionStorage.getItem("politicsstatus")) {
         this.getRequest('/employee/basic/politicsstatus').then(resp => {
-          if (resp) {
-            this.politicsstatus = resp;
-            window.sessionStorage.setItem("politicsstatus", JSON.stringify(resp));
+          if (resp.data) {
+            this.politicsstatus = resp.data;
+            window.sessionStorage.setItem("politicsstatus", JSON.stringify(resp.data));
           }
         })
       } else {
@@ -874,9 +884,9 @@ export default {
       }
       if (!window.sessionStorage.getItem("deps")) {
         this.getRequest('/employee/basic/deps').then(resp => {
-          if (resp) {
-            this.allDeps = resp;
-            window.sessionStorage.setItem("deps", JSON.stringify(resp));
+          if (resp.data) {
+            this.allDeps = resp.data;
+            window.sessionStorage.setItem("deps", JSON.stringify(resp.data));
           }
         })
       } else {
@@ -897,64 +907,76 @@ export default {
       this.getMaxWordID();
       this.dialogVisible = true;
     },
-    advanceSearch(){
-      let advUrl = '/employee/basic/advanceSearch/?page=' + this.page + '&size=' + this.size;
-      console.log(this.searchValue)
-      this.postRequest(advUrl,this.searchValue).then(resp => {
-        this.loading = false;
-        // this.advanced
-        this.inputDepName = ''
-        this.searchValue = { // 30-1 高级搜索 条件对象
-          politicId: null,
-          nationId: null,
-          jobLevelId: null,
-          posId: null,
-          engageForm: null,
-          departmentId: null,
-          beginDateScope: null
-        }
-        if (resp) {
-          this.emps = resp.data;
-          this.total = resp.total;
-        }
-      });
-    },
-    inittypeEmps(type) {
+    // 多此一举
+    // advanceSearch(){
+    //   let advUrl = '/employee/basic/advanceSearch/?page=' + this.page + '&size=' + this.size;
+    //   console.log(this.searchValue)
+    //   this.postRequest(advUrl,this.searchValue).then(resp => {
+    //     this.loading = false;
+    //     // this.advanced
+    //     this.inputDepName = ''
+    //     this.searchValue = { // 30-1 高级搜索 条件对象
+    //       politicId: null,
+    //       nationId: null,
+    //       jobLevelId: null,
+    //       posId: null,
+    //       engageForm: null,
+    //       departmentId: null,
+    //       beginDateScope: null
+    //     }
+    //     if (resp) {
+    //       this.emps = resp.data;
+    //       this.total = resp.total;
+    //     }
+    //   });
+    // },
+    // 复用非法，且保持restful就是那么的麻烦
+    initEmps(type) {
       this.loading = true;
       let url = '/employee/basic/?page=' + this.page + '&size=' + this.size;
       // 为了restful，不用post就很麻烦,如果不为了复用接口可以分两个写
       if (type && type == 'advanced') {
-        // if (this.searchValue.politicId) {
-        //   url += '&politicId=' + this.searchValue.politicId;
-        // }
-        // if (this.searchValue.nationId) {
-        //   url += '&nationId=' + this.searchValue.nationId;
-        // }
-        // if (this.searchValue.jobLevelId) {
-        //   url += '&jobLevelId=' + this.searchValue.jobLevelId;
-        // }
-        // if (this.searchValue.posId) {
-        //   url += '&posId=' + this.searchValue.posId;
-        // }
-        // if (this.searchValue.engageForm) {
-        //   url += '&engageForm=' + this.searchValue.engageForm;
-        // }
-        // if (this.searchValue.departmentId) {
-        //   url += '&departmentId=' + this.searchValue.departmentId;
-        // }
-        // if (this.searchValue.beginDateScope) {
-        //   url += '&beginDateScope=' + this.searchValue.beginDateScope;
-        // }
+        if (this.searchValue.politicId) {
+          url += '&politicId=' + this.searchValue.politicId;
+        }
+        if (this.searchValue.nationId) {
+          url += '&nationId=' + this.searchValue.nationId;
+        }
+        if (this.searchValue.jobLevelId) {
+          url += '&jobLevelId=' + this.searchValue.jobLevelId;
+        }
+        if (this.searchValue.posId) {
+          url += '&posId=' + this.searchValue.posId;
+        }
+        if (this.searchValue.engageForm) {
+          url += '&engageForm=' + this.searchValue.engageForm;
+        }
+        if (this.searchValue.departmentId) {
+          url += '&departmentId=' + this.searchValue.departmentId;
+        }
+        if (this.searchValue.beginDateScope) {
+          url += '&beginDateScope=' + this.searchValue.beginDateScope;
+        }
       } else {
         url += "&name=" + this.keyword;
       }
       this.getRequest(url).then(resp => {
-        this.loading = false;
-        if (resp) {
-          this.emps = resp.data;
-          this.total = resp.total;
-        }
-      });
+            this.loading = false;
+            this.inputDepName = ''
+            this.searchValue = { // 30-1 高级搜索 条件对象
+              politicId: null,
+              nationId: null,
+              jobLevelId: null,
+              posId: null,
+              engageForm: null,
+              departmentId: null,
+              beginDateScope: null
+            }
+            if (resp.data) {
+              this.emps = resp.data.data;
+              this.total = resp.data.total;
+            }
+          });
     }
   }
 }

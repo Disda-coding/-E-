@@ -23,6 +23,7 @@ proxyObj['/ws'] = {
 
 // 访问的默认的路径和端口
 module.exports = {
+    productionSourceMap: true,
     devServer: {
         host: 'localhost',
         port: 8080,
