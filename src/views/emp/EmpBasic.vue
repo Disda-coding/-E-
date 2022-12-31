@@ -2,11 +2,7 @@
   <div>
     <div>
       <div style="display: flex;justify-content: space-between">
-        <!-- 1、 -->
-        <!-- 20、搜索 v-model="empName" <el-input @keydown.enter.native="initEmps" 回车键调用初始化会员方法
-             21、@click="initEmps">搜索</el-button>
-             22、清空 clearable @clear="initEmps" -->
-        <!-- 28-8  :disabled="showAdvanceSearchVisible" -->
+
         <div>
           <el-input placeholder="请输入员工名进行搜索，可以直接回车搜索..."
                     clearable
@@ -841,7 +837,7 @@ export default {
     getMaxWordID() {
       this.getRequest("/employee/basic/maxWorkId").then(resp => {
         if (resp) {
-          this.emp.workID = resp.obj;
+          this.emp.workID = resp.data;
         }
       })
     },
@@ -923,7 +919,7 @@ export default {
         }
       });
     },
-    initEmps(type) {
+    inittypeEmps(type) {
       this.loading = true;
       let url = '/employee/basic/?page=' + this.page + '&size=' + this.size;
       // 为了restful，不用post就很麻烦,如果不为了复用接口可以分两个写

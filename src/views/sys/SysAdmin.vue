@@ -197,8 +197,8 @@ export default {
     // 19、获取所有操作员
     initAllRoles() {
       this.getRequest(' /system/admin/roles').then(resp => {
-        if (resp) {
-          this.allRoles = resp
+        if (resp.data) {
+          this.allRoles = resp.data
         }
       })
     },
@@ -237,8 +237,8 @@ export default {
     // 4、获取所有操作员；11、加参数关键字
     initAdmins() {
       this.getRequest('/system/admin/?keywords=' + this.keywords).then(resp => {
-        if (resp) {
-          this.admins = resp
+        if (resp.data) {
+          this.admins = resp.data
         }
       })
     }

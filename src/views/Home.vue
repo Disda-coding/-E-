@@ -214,7 +214,9 @@ export default {
   margin-top: 12px;
   margin-right: 6px;
 }
-
+/*
+  使得header不会移动
+*/
 .el-main {
   height: calc(100vh - 60px);
   overflow-y: auto;

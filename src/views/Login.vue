@@ -86,7 +86,7 @@ export default {
               throw new Error("用户不存在")
             }
 
-            let salt = resp.obj.salt;
+            let salt = resp.data.salt;
             // alert(salt)
             this.LoginForm.password = Encrypt(this.LoginForm.password, salt);
             return 'ok'
@@ -97,7 +97,7 @@ export default {
               this.loading = false
               if (resp.code==200) {
                 // 存储用户 token 到 sessionStorage
-                const tokenStr = resp.obj.tokenHead + resp.obj.token
+                const tokenStr = resp.data.tokenHead + resp.data.token
 
                 window.sessionStorage.setItem('tokenStr', tokenStr)
                 // 跳转到首页

@@ -177,7 +177,7 @@ export default {
         if (resp) {
           // console.log(resp)
           this.dialogVisible = false // 关闭对话框
-          this.addDep2Deps(this.deps, resp.obj) // 23、【无效】手动插入部门 显示添加后的数据
+          this.addDep2Deps(this.deps, resp.data) // 23、【无效】手动插入部门 显示添加后的数据
           this.initDep() // 21、调用初始化方法 清空数据
         }
       })

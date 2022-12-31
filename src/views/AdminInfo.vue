@@ -171,7 +171,7 @@ export default {
           // alert('submit!');
           this.ruleForm.adminId = this.admin.id
           this.putRequest('/admin/pass', this.ruleForm).then(resp => {
-            if (resp) {
+            if (resp.code == 200) {
               // 更新密码成功后 退出登录
               this.postRequest('/logout') // 退出登录
               window.sessionStorage.removeItem('user')
@@ -210,11 +210,11 @@ export default {
     },
     initAdmin() {
       this.getRequest('/admin/info').then(resp => {
-        if (resp) {
-          this.admin = resp
+        if (resp.data) {
+          this.admin = resp.data
           this.admin2 = Object.assign({}, this.admin) // 1-6 对象拷贝给 admin2
-          window.sessionStorage.setItem('user', JSON.stringify(resp))
-          this.$store.commit('INIT_ADMIN', resp)
+          window.sessionStorage.setItem('user', JSON.stringify(resp.data))
+          this.$store.commit('INIT_ADMIN', resp.data)
         }
       })
     }
