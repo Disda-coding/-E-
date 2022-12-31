@@ -141,8 +141,8 @@ export default {
     // 获取所有角色
     initRoles() {
       this.getRequest('/system/basic/permiss/').then(resp => {
-        if (resp) {
-          this.roles = resp
+        if (resp.data) {
+          this.roles = resp.data
         }
       })
     },

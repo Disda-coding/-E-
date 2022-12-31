@@ -198,7 +198,7 @@ export default {
     // 1-9 更新用户
     updateAdminInfo() {
       this.putRequest('/admin/info', this.admin2).then(resp => {
-        if (resp) {
+        if (resp.code == 200) {
           this.dialogVisible = false
           this.initAdmin()
         }

@@ -133,8 +133,8 @@ const store = new Vuex.Store({
             context.commit('INIT_DATA')
             // 1-4 调用接口获取数据
             getRequest('/chat/admin').then(resp => {
-                if (resp) {
-                    context.commit('INIT_ADMINS', resp)
+                if (resp.data) {
+                    context.commit('INIT_ADMINS', resp.data)
                 }
             })
         },

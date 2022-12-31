@@ -16,11 +16,11 @@ export const initMenu = (router, store) => {
     }
 
 
-    getRequest('/system/cfg/menu').then(data => {
+    getRequest('/system/cfg/menu').then(resp => {
         // 如果数据存在 格式化路由
-        if (data) {
+        if (resp.data) {
             // 格式化好路由
-            let fmtRoutes = formatRoutes(data)
+            let fmtRoutes = formatRoutes(resp.data)
             // 添加到 router
             router.addRoutes(fmtRoutes)
             // 将数据存入 Vuex

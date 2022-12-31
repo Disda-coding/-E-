@@ -179,8 +179,8 @@ export default {
     // 2-3 获取所有工资账套
     initSalaries() {
       this.getRequest('/salary/sobcfg/salaries').then(resp => {
-        if (resp) {
-          this.salaries = resp
+        if (resp.data) {
+          this.salaries = resp.data
         }
       })
     },
@@ -197,9 +197,9 @@ export default {
     // 获取所有数据
     initEmps() {
       this.getRequest('/salary/sobcfg/?currentPage=' + this.currentPage + '&size=' + this.size).then(resp => {
-        if (resp) {
-          this.emps = resp.data
-          this.total = resp.total
+        if (resp.data) {
+          this.emps = resp.data.data
+          this.total = resp.data.total
         }
       })
     }

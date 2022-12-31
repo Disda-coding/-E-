@@ -56,8 +56,8 @@ export default {
     //观察filterkey_get的值，如果发生变化就刷新admin数组
     filterkey_get: function (val) {
       this.getRequest('/chat/admin?keywords=' + val).then(resp => {
-        if (resp) {
-          this.$store.commit("INIT_ADMINS", resp)
+        if (resp.data) {
+          this.$store.commit("INIT_ADMINS", resp.data)
         }
       })
     }

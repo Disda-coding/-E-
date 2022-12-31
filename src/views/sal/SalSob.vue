@@ -272,8 +272,8 @@ export default {
     // 1-3 初始化数据
     initSalaries() {
       this.getRequest('/salary/sob/').then(resp => {
-        if (resp) {
-          this.salaries = resp
+        if (resp.data) {
+          this.salaries = resp.data
         }
       })
     }

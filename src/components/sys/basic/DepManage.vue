@@ -193,8 +193,8 @@ export default {
     // 5、获取所有部门
     initDeps() {
       this.getRequest('/system/basic/department/').then(resp => {
-        if (resp) {
-          this.deps = resp
+        if (resp.data) {
+          this.deps = resp.data
         }
       })
     },

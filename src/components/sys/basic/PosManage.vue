@@ -193,8 +193,8 @@ export default {
     // 获取后端接口所有职位数据
     initPositions() {
       this.getRequest('/system/basic/pos/').then(resp => {
-        if (resp) {
-          this.positions = resp
+        if (resp.data) {
+          this.positions = resp.data
         }
       })
     }
