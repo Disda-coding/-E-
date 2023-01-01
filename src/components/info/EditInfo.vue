@@ -92,7 +92,7 @@ export default {
 }
 
 .row {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   font-size: 14px;
   color: #606266;
 }
