@@ -31,7 +31,7 @@ export const initMenu = (router, store) => {
         return;
     }
     refreshMenu(router,store)
-    console.log(store.state)
+    // console.log(store.state)
 }
 
 export const formatRoutes = (routes) => {

@@ -38,7 +38,7 @@ import router from "@/router";
 import store from "@/store";
 
 export default {
-  name: "PositionMana",
+  name: "PermissManage",
   data() {
     return {
       role: {
