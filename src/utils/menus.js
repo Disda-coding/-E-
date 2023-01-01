@@ -9,13 +9,7 @@ import {getRequest} from "@/utils/api";
 //     router.addRoutes(params)
 // }
 // router 路由； store Vuex
-export const initMenu = (router, store) => {
-    // 如果有数据，不做操作
-    if (store.state.routes.length > 0) {
-        return;
-    }
-
-
+export const refreshMenu=(router, store)=>{
     getRequest('/system/cfg/menu').then(resp => {
         // 如果数据存在 格式化路由
         if (resp.data) {
@@ -29,6 +23,14 @@ export const initMenu = (router, store) => {
             store.dispatch('connect')
         }
     })
+}
+
+export const initMenu = (router, store) => {
+    //如果有数据，不做操作
+    if (store.state.routes.length > 0) {
+        return;
+    }
+    refreshMenu(router,store)
     console.log(store.state)
 }
 

@@ -33,6 +33,10 @@
   </div>
 </template>
 <script>
+import {initMenu, refreshMenu} from "@/utils/menus";
+import router from "@/router";
+import store from "@/store";
+
 export default {
   name: "PositionMana",
   data() {
@@ -107,6 +111,8 @@ export default {
       })
       this.putRequest(url).then(resp => {
         if (resp) {
+          //更新用户权限后要刷新一下，万一涉及到自己的
+          refreshMenu(router,store)
           this.activeName = -1 // 关闭折叠面板
         }
       })
