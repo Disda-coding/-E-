@@ -28,7 +28,7 @@ axios.interceptors.response.use(success => {
             const tokenStr = success.data.data.tokenHead + success.data.data.token
             window.sessionStorage.setItem("tokenStr",tokenStr)
             //重发请求
-            new axios(success.config)
+            // new axios(success.config)
             return success.data
         }
         // 后端：500 业务逻辑错误，401 未登录，403 无权访问；
