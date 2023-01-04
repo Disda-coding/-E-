@@ -3,7 +3,6 @@ import axios from "axios";
 import {Message} from "element-ui";
 //获取路由，可以实现跳转功能
 import router from "@/router";
-import store from "@/store";
 
 
 // 请求拦截器
@@ -14,7 +13,7 @@ axios.interceptors.request.use(config => {
         config.headers['Authorization'] = window.sessionStorage.getItem('tokenStr')
     }
     return config;
-},error => {
+}, error => {
     console.log(error)
 })
 
@@ -23,13 +22,13 @@ axios.interceptors.response.use(success => {
     // 业务逻辑错误
     if (success.status && success.status === 200) { // 调到接口
         // 续签，可以续签，怎么实现无感
-        if (success.data.code==666){
+        if (success.data.code == 666) {
             // todo 测试
 
             const tokenStr = success.data.data.tokenHead + success.data.data.token
 
-            window.sessionStorage.setItem("tokenStr",tokenStr)
-            console.log("刷新token"+window.sessionStorage.getItem('tokenStr'))
+            window.sessionStorage.setItem("tokenStr", tokenStr)
+            console.log("刷新token" + window.sessionStorage.getItem('tokenStr'))
             // websocket长连接因此没办法刷新
             // store.dispatch('connect')
             //重发请求
@@ -37,10 +36,14 @@ axios.interceptors.response.use(success => {
 
         }
         // 后端：500 业务逻辑错误，401 未登录，403 无权访问；
-        if(success.data.code!=200 && success.data.message!=null){
-        // if (success.data.code === 500 || success.data.code === 401 || success.data.code === 403) {
+        if (success.data.code != 200 && success.data.message != null) {
+            // if (success.data.code === 500 || success.data.code === 401 || success.data.code === 403) {
+
             Message.error({message: success.data.message})
             // 优化了此处代码 使得错误也返回了后端信息，更加灵活了
+            if (success.data.code === 401) {
+                router.replace('/')
+            } // 路由替换
             return success.data
         }
         if (success.data.message) { // 输出后端 添加成功 之类的信息
