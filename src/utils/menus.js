@@ -34,7 +34,8 @@ export const initMenu = (router, store) => {
     if (store.state.routes.length > 0) {
         return;
     }
-    refreshMenu(router, store)
+    refreshMenu(router, store).then(console.log("After。menus_len"+store.state.routes.length))
+
 
 }
 

@@ -3,7 +3,7 @@ import axios from "axios";
 import {Message} from "element-ui";
 //获取路由，可以实现跳转功能
 import router from "@/router";
-import async from "async";
+import store from "@/store";
 
 
 // 请求拦截器
@@ -25,11 +25,16 @@ axios.interceptors.response.use(success => {
         // 续签，可以续签，怎么实现无感
         if (success.data.code==666){
             // todo 测试
+
             const tokenStr = success.data.data.tokenHead + success.data.data.token
+
             window.sessionStorage.setItem("tokenStr",tokenStr)
+            console.log("刷新token"+window.sessionStorage.getItem('tokenStr'))
+            // websocket长连接因此没办法刷新
+            // store.dispatch('connect')
             //重发请求
-            // new axios(success.config)
-            return success.data
+            return new axios(success.config)
+
         }
         // 后端：500 业务逻辑错误，401 未登录，403 无权访问；
         if(success.data.code!=200 && success.data.message!=null){
