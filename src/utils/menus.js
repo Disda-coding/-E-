@@ -3,14 +3,17 @@
 import {getRequest} from "@/utils/api";
 
 
+
+
 // 菜单请求工具类
 // router.$addRoutes = (params) => {
 //     router.matcher = new Router({ mode: 'history' }).matcher
 //     router.addRoutes(params)
 // }
 // router 路由； store Vuex
-export const refreshMenu=(router, store)=>{
-    getRequest('/system/cfg/menu').then(resp => {
+// 添加了async和await使得不会出现异步操作带来的取不到state.routes的情况，造成重复添加routes
+async function refreshMenu(router, store){
+     await getRequest('/system/cfg/menu').then(resp => {
         // 如果数据存在 格式化路由
         if (resp.data) {
             // 格式化好路由
@@ -27,11 +30,12 @@ export const refreshMenu=(router, store)=>{
 
 export const initMenu = (router, store) => {
     //如果有数据，不做操作
+    //有bug就是store取不到routes，异步执行有关系
     if (store.state.routes.length > 0) {
         return;
     }
-    refreshMenu(router,store)
-    // console.log(store.state)
+    refreshMenu(router, store)
+
 }
 
 export const formatRoutes = (routes) => {

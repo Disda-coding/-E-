@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import App from './App.vue'
-import router from './router'
 import store from "@/store";
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import 'font-awesome/css/font-awesome.min.css'
+
 
 import {postRequest} from "@/utils/api";
 import {putRequest} from "@/utils/api";
@@ -12,8 +12,9 @@ import {getRequest} from "@/utils/api";
 import {deleteRequest} from "@/utils/api";
 import {initMenu} from "@/utils/menus";
 import {downloadRequest} from "@/utils/download";
+import router from "@/router";
 
-Vue.config.productionTip = false
+Vue.config.productionTip = true
 // 默认使用small size
 Vue.use(ElementUI,{size:'small'});
 // 插件形式使用请求

@@ -14,7 +14,8 @@ const store = new Vuex.Store({
     //网上的方法，创建getters，防止组件里面监听不到变化
     getters: {
         admins_get: state => state.admins,
-        filterkey_get: state => state.filterKey
+        filterkey_get: state => state.filterKey,
+        routes_get: state => state.routes
     },
     state: {
         routes: [],
@@ -37,7 +38,7 @@ const store = new Vuex.Store({
         },
         // 初始化路由 菜单
         initRoutes(state, data) {
-            state.routes = data
+                state.routes = data
         },
         changehasMsg(state, msg) {
             state.hasMsg = msg

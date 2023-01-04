@@ -3,6 +3,8 @@ import axios from "axios";
 import {Message} from "element-ui";
 //获取路由，可以实现跳转功能
 import router from "@/router";
+import async from "async";
+
 
 // 请求拦截器
 axios.interceptors.request.use(config => {
@@ -20,6 +22,15 @@ axios.interceptors.request.use(config => {
 axios.interceptors.response.use(success => {
     // 业务逻辑错误
     if (success.status && success.status === 200) { // 调到接口
+        // 续签，可以续签，怎么实现无感
+        if (success.data.code==666){
+            // todo 测试
+            const tokenStr = success.data.data.tokenHead + success.data.data.token
+            window.sessionStorage.setItem("tokenStr",tokenStr)
+            //重发请求
+            new axios(success.config)
+            return success.data
+        }
         // 后端：500 业务逻辑错误，401 未登录，403 无权访问；
         if(success.data.code!=200 && success.data.message!=null){
         // if (success.data.code === 500 || success.data.code === 401 || success.data.code === 403) {
@@ -61,6 +72,7 @@ export const postRequest = (url, params) => {
         data: params
     })
 }
+
 
 // 传送 json 格式的 get 请求
 export const getRequest = (url, params) => {
