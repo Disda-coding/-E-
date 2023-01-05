@@ -10,8 +10,8 @@ import {getRequest} from "@/utils/api";
 // }
 // router 路由； store Vuex
 // 添加了async和await使得不会出现异步操作带来的取不到state.routes的情况，造成重复添加routes, 还是会有其他新bug
-async function refreshMenu(router, store) {
-    await getRequest('/system/cfg/menu').then(resp => {
+export function refreshMenu(router, store) {
+     getRequest('/system/cfg/menu').then(resp => {
         // 如果数据存在 格式化路由
         if (resp.data) {
             // 格式化好路由
