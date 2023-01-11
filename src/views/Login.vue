@@ -58,7 +58,9 @@ export default {
       }
     }
   },
-
+  mounted() {
+    this.sessionStorage.removeItem("tokenStr")
+  },
   methods: {
     forgot(){
       this.$router.push('/forgot')
@@ -97,7 +99,7 @@ export default {
               this.loading = false
               if (resp.code==200) {
                 // 存储用户 token 到 sessionStorage
-                const tokenStr = resp.data.tokenHead + resp.data.token
+                const tokenStr = resp.data.tokenHead +" "+ resp.data.token
 
                 window.sessionStorage.setItem('tokenStr', tokenStr)
                 // 跳转到首页

@@ -1,6 +1,7 @@
 //不是vue组件，因此不能直接用this.调用
 
 import {getRequest} from "@/utils/api";
+import {createRouter} from "@/router";
 
 
 // 菜单请求工具类
@@ -16,6 +17,7 @@ export function refreshMenu(router, store) {
         if (resp.data) {
             // 格式化好路由
             let fmtRoutes = formatRoutes(resp.data)
+            router.matcher=createRouter().matcher
             // 添加到 router
             router.addRoutes(fmtRoutes)
             // 将数据存入 Vuex

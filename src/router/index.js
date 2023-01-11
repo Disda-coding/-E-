@@ -10,6 +10,7 @@ import Forgot from "@/views/Forgot";
 import FriendChat from "@/views/chat/FriendChat";
 import AdminInfo from "@/views/AdminInfo";
 
+
 // 开启路由
 Vue.use(VueRouter)
 // 配置路由
@@ -57,9 +58,14 @@ const routes = [
   }
 ]
 
+export const createRouter = () => new VueRouter({
+  routes
+});
 
 
 const router = new VueRouter({
+  // mode: 'history',
+  // base: process.env.BASE_URL,
   routes
 })
 

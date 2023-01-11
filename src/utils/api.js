@@ -25,7 +25,7 @@ axios.interceptors.response.use(success => {
         if (success.data.code == 666) {
             // todo 测试
 
-            const tokenStr = success.data.data.tokenHead + success.data.data.token
+            const tokenStr = success.data.data.tokenHead +" "+ success.data.data.token
 
             window.sessionStorage.setItem("tokenStr", tokenStr)
             console.log("刷新token" + window.sessionStorage.getItem('tokenStr'))
@@ -41,7 +41,7 @@ axios.interceptors.response.use(success => {
 
             Message.error({message: success.data.message})
             // 优化了此处代码 使得错误也返回了后端信息，更加灵活了
-            if (success.data.code === 401) {
+            if (success.data.code === 20005) {
                 router.replace('/')
             } // 路由替换
             return success.data
